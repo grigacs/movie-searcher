@@ -1,0 +1,22 @@
+@import "../abstract/mixins";
+
+$color-black: #000;
+$color-white: #FFF;
+$color-red: #EB5151;
+
+$bp-largest: 75em; // 1200px
+$bp-large: 68.75em; // 1100px
+$bp-medium: 56.25em; // 900px
+$bp-small: 37.5em; // 600px
+$bp-small: 31.25em; // 500px
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
