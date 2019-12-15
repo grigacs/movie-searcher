@@ -1,0 +1,51 @@
+@import "../../../assets/scss/base/base";
+
+:host {
+  display: flex;
+  width: 100%;
+  form {
+    width: 100%;
+    div {
+      position: relative;
+      &.error {
+        font-size: 2rem;
+        text-align: center;
+        color: $color-red;
+        padding: 1rem;
+      }
+      label {
+        font-size: 4rem;
+        width: 100%;
+        display: flex;
+        input {
+          font-family: "Open Sans", sans-serif;
+          background: #000;
+          border-top: none;
+          border-right: none;
+          border-bottom: 0.1rem solid #FFF;
+          border-left: none;
+          padding: 0.2rem 0.5rem 0.3rem;
+          width: 100%;
+          color: #FFF;
+          font-size: 2.5rem;
+          margin-left: 1.5rem;
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+
+      button {
+        @include absRightCenter;
+        cursor: pointer;
+        font-size: 3rem;
+        border: none;
+        background: transparent;
+        color: $color-white;
+        &:hover {
+          color: $color-red;
+        }
+      }
+    }
+  }
+}

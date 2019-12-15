@@ -1,1 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'assets/scss/base/base';
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%; // 1rem = 10px, 10px/16px = 62.5%
+}
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  padding: 0;
+  margin: 0;
+  background-color: $color-black;
+  color: $color-white;
+}
+
+
