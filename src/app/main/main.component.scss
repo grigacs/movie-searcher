@@ -9,7 +9,27 @@
   }
 
   main {
-    width: 74.5%;
-    margin: 3em auto 0;
+    width: 100%;
+
+    div {
+      &.no--result, &.result--counts {
+        margin-top: 15rem;
+        font-size: 2.9rem;
+      }
+
+      &.result--counts {
+        margin-bottom: 2rem;
+      }
+
+      &.list--container {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: start;
+
+        &:after {
+
+        }
+      }
+    }
   }
 }
