@@ -2,14 +2,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
-import { SearchComponent } from './movie/search/search.component';
+
 import { RouterModule } from '@angular/router';
+import { SearchComponent } from './movie/search/search.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { HeaderComponent } from './header/header.component';
 import { MainComponent } from './main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from 'ngx-icons';
+
+
+
 
 @NgModule({
   declarations: [

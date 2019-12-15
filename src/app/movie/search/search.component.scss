@@ -7,6 +7,12 @@
     width: 100%;
     div {
       position: relative;
+      &.error {
+        font-size: 2rem;
+        text-align: center;
+        color: $color-red;
+        padding: 1rem;
+      }
       label {
         font-size: 4rem;
         width: 100%;

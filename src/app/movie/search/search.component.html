@@ -11,4 +11,7 @@
       <i class="fa fa-times-circle"></i>
     </button>
   </div>
+  <div class="error length-error" *ngIf="form.get('title').hasError('minlength')">
+    Minimum length is three characters
+  </div>
 </form>
