@@ -30,10 +30,7 @@ export class SearchComponent implements OnInit {
       return;
     }
 
-    this.movieService.getMovies(this.form.value.title)
-      .subscribe(movie => console.log(movie));
-
-    this.form.reset();
+    this.movieService.getMovies(this.form.value.title);
   }
 
   onResetForm() {
