@@ -3,4 +3,21 @@
 </header>
 <main>
   <app-search></app-search>
+
+  <ng-container
+    *ngIf="noFoundedMovie; then noResult; else movieList">
+  </ng-container>
+  <ng-template #noResult>
+    <div class="no--result" *ngIf="noFoundedMovie">
+      No result founded!!!
+    </div>
+  </ng-template>
+  <ng-template #movieList>
+    <div class="result--counts" *ngIf="movieTotalCount">
+      {{movieTotalCount}} Search result(s):
+    </div>
+    <div class="list list--container">
+      <app-list *ngFor="let movie of movies" [movie]="movie"></app-list>
+    </div>
+  </ng-template>
 </main>

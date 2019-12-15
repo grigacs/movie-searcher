@@ -1,0 +1,21 @@
+:host{
+  margin: auto;
+  .movie {
+    max-width: 16.6rem;
+    &--img {
+      img {
+        width: 100%;
+      }
+    }
+
+    &--title {
+      font-size: 1.6rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
+      padding: 1rem 0;
+      margin-bottom: 1rem;
+    }
+  }
+}
