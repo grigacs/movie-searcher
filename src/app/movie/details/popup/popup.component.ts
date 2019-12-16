@@ -16,7 +16,6 @@ export class PopupComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit() {
-    console.log(this.extendedMovieDetails);
   }
 
   onClosePopup() {

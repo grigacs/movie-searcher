@@ -27,7 +27,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         if (paramMap.has('movieId') && paramMap.has('mediaType')) {
           this.movieId = parseInt(paramMap.get('movieId'), 10);
           this.mediaType = paramMap.get('mediaType');
-          console.log(isNaN(this.movieId));
+
           if (isNaN(this.movieId)) {
             this.router.navigate(['']);
           }

@@ -123,30 +123,30 @@ export class MovieService {
           const posterPath = !extendedMovieDetails.poster_path ?
             '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${extendedMovieDetails.poster_path}`;
 
+          const defaultProperties = {
+            poster_path: posterPath,
+            overview: extendedMovieDetails.overview,
+            genres: extendedMovieDetails.genres,
+            tagline: extendedMovieDetails.tagline,
+            imdb_id: extendedMovieDetails.imdb_id,
+            imdb_link: `${IMDB_LINK}${extendedMovieDetails.imdb_id}`,
+          };
+
           if (mediaType === 'movie') {
+
             return {
-              poster_path: posterPath,
+              ...defaultProperties,
               original_title: extendedMovieDetails.original_title,
-              overview: extendedMovieDetails.overview,
-              genres: extendedMovieDetails.genres,
               release_date: extendedMovieDetails.release_date,
-              tagline: extendedMovieDetails.tagline,
-              imdb_id: extendedMovieDetails.imdb_id,
-              imdb_link: `${IMDB_LINK}${extendedMovieDetails.imdb_id}`,
               runtime: extendedMovieDetails.runtime,
               production_countries: extendedMovieDetails.production_countries,
               spoken_languages: extendedMovieDetails.spoken_languages
             };
           } else {
             return {
-              poster_path: posterPath,
+              ...defaultProperties,
               name: extendedMovieDetails.name,
-              overview: extendedMovieDetails.overview,
-              genres: extendedMovieDetails.genres,
               first_air_date: extendedMovieDetails.first_air_date,
-              tagline: extendedMovieDetails.tagline,
-              imdb_id: extendedMovieDetails.imdb_id,
-              imdb_link: `${IMDB_LINK}${extendedMovieDetails.imdb_id}`,
               episode_run_time: extendedMovieDetails.episode_run_time,
               origin_country: extendedMovieDetails.origin_country,
               languages: extendedMovieDetails.languages

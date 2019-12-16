@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div *ngIf="!isMovie()" class="tiv">
+        <div *ngIf="!isMovie()" class="tv">
           <h1>{{extendedMovieDetails.name}}</h1>
           <p class="released--date">Released: {{extendedMovieDetails.first_air_date | date}}</p>
           <p class="overview">{{extendedMovieDetails.overview}}</p>
@@ -126,7 +126,7 @@
                 {{ runtime}},
               </ng-template>
               <ng-template #lastRuntime>
-                {{ runtime}}
+                {{ runtime}} mins
               </ng-template>
             </p>
           </div>
