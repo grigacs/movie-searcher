@@ -14,6 +14,8 @@ export class MainComponent implements OnInit, OnDestroy {
   movieTotalCount: number;
   movieSubscription: Subscription;
   noFoundedMovie = false;
+  pageNumbers: number;
+  clearList: boolean;
 
   constructor(private movieService: MovieService) { }
 
@@ -28,22 +30,35 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.onGetStoredMovies();
+
+    this.movieService.getMovieGenres();
+
     this.movieSubscription = this.movieService.getMoviesUpdateListener()
       .subscribe(movies => {
+        this.clearList = movies.clear;
 
         if (MainComponent.checkFoundMovies(movies.count)) {
           this.noFoundedMovie = false;
           this.movieTotalCount = movies.count;
+          this.pageNumbers = movies.total_pages;
           this.movies = [...movies.results];
         } else {
           this.noFoundedMovie = true;
         }
-
-        console.log(movies);
       });
   }
 
   ngOnDestroy(): void {
     this.movieSubscription.unsubscribe();
+  }
+
+  onGetStoredMovies() {
+    if (this.movieService.getStoredMovies()) {
+      this.noFoundedMovie = false;
+      this.movieTotalCount = this.movieService.getStoredMovies().count;
+      this.pageNumbers = this.movieService.getStoredMovies().total_pages;
+      this.movies = [...this.movieService.getStoredMovies().results];
+    }
   }
 }

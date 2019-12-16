@@ -1,4 +1,5 @@
 <div class="movie movie--container">
+  <a [routerLink]="['details', movie.media_type, movie.id]">
     <div class="movie--img img__holder">
       <img
         src="{{movie.poster_path}}"
@@ -7,6 +8,14 @@
       >
     </div>
     <div class="movie--title" title="{{movie.title}}">
-       {{movie.title}}
+      {{movie.title}}
     </div>
+  </a>
+  <div class="movie--genres" title="{{movie.genres}}">
+    {{movie.genres}}
+  </div>
+  <div class="movie--release-date" title="{{movie.release_date}}">
+    {{movie.release_date | date}}
+  </div>
 </div>
+

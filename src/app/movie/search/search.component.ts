@@ -10,12 +10,16 @@ import {MovieService} from '../movie.service';
 export class SearchComponent implements OnInit {
 
   form: FormGroup;
+  title: string = null;
 
   constructor(private movieService: MovieService) {}
 
   ngOnInit() {
+    this.onGetStoredTitle();
+
+
     this.form = new FormGroup({
-      title: new FormControl( null,
+      title: new FormControl( this.title,
         {
           validators: [
             Validators.required,
@@ -34,7 +38,13 @@ export class SearchComponent implements OnInit {
   }
 
   onResetForm() {
+    this.movieService.clearMovies();
     this.form.reset();
   }
 
+  onGetStoredTitle() {
+    if (this.movieService.getStoredTitle()) {
+      this.title = this.movieService.getStoredTitle();
+    }
+  }
 }

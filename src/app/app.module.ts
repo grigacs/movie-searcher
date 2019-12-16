@@ -10,6 +10,8 @@ import { MainComponent } from './main/main.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from 'ngx-icons';
 import { ListComponent } from './movie/list/list.component';
+import { DetailsComponent } from './movie/details/details.component';
+import { PopupComponent } from './movie/details/popup/popup.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import { ListComponent } from './movie/list/list.component';
     SearchComponent,
     HeaderComponent,
     MainComponent,
-    ListComponent
+    ListComponent,
+    DetailsComponent,
+    PopupComponent
   ],
   imports: [
     BrowserModule,
