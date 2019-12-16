@@ -29,6 +29,13 @@
         &:after {
 
         }
+
+        .pagination {
+          display: flex;
+          flex-flow: row;
+          justify-content: space-evenly;
+          width: 100%;
+        }
       }
     }
   }

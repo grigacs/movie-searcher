@@ -18,6 +18,15 @@
     </div>
     <div class="list list--container">
       <app-list *ngFor="let movie of movies" [movie]="movie"></app-list>
+      <ng-container *ngIf="movies.length > 0">
+        <div class="pagination pagination-holder">
+          <div class="pagination--elements"
+               *ngFor="let in of counter(pageNumbers);
+               let i = index"
+               (click)="onChangePage(i+ 1)"
+          >{{i + 1}}</div>
+        </div>
+      </ng-container>
     </div>
    </ng-template>
 </main>

@@ -17,7 +17,8 @@ export class MainComponent implements OnInit, OnDestroy {
   pageNumbers: number;
   clearList: boolean;
 
-  constructor(private movieService: MovieService) { }
+  constructor(private movieService: MovieService) {
+  }
 
   private static checkFoundMovies(count: number) {
     let isFoundedMovie = false;
@@ -61,4 +62,15 @@ export class MainComponent implements OnInit, OnDestroy {
       this.movies = [...this.movieService.getStoredMovies().results];
     }
   }
+
+  counter(pageNumbers: number) {
+    return new Array(pageNumbers);
+  }
+
+  onChangePage(pageNumber: number) {
+    const title = this.movieService.getStoredTitle();
+
+    this.movieService.getMovies(title, pageNumber);
+  }
+
 }

@@ -37,9 +37,9 @@ export class MovieService {
     return this.moviesUpdated.asObservable();
   }
 
-  getMovies(title: string): Subscription {
+  getMovies(title: string, page: number = 1): Subscription {
     return this.http.get<MovieEndpointModel>(
-      `${API_URL}${environment.searchMoviesEndpoint}?api_key=${API_KEY}&language=${API_LANG}&query=${title}`,
+      `${API_URL}${environment.searchMoviesEndpoint}?api_key=${API_KEY}&language=${API_LANG}&query=${title}&page=${page}`,
     ).pipe(
       map(moviesData => {
         return {
