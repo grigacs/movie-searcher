@@ -1,6 +1,5 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MovieDetailsModel} from '../modules/movie-details.model';
-import { Subscription } from 'rxjs';
 import {MovieService} from '../movie.service';
 
 @Component({
@@ -11,10 +10,13 @@ import {MovieService} from '../movie.service';
 export class ListComponent implements OnInit {
 
   @Input() movie: MovieDetailsModel;
+  genreNames: string;
 
-  constructor() { }
+
+  constructor(private movieService: MovieService) { }
 
   ngOnInit() {
+    this.genreNames = this.movieService.getMovieGenreNames(this.movie.genre_ids);
+    this.movie.genres = this.genreNames;
   }
-
 }

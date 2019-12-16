@@ -1,8 +1,5 @@
 @import "../abstract/mixins";
-
-$color-black: #000;
-$color-white: #FFF;
-$color-red: #EB5151;
+@import "../abstract/variables";
 
 $bp-largest: 75em; // 1200px
 $bp-large: 68.75em; // 1100px

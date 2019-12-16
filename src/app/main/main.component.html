@@ -8,7 +8,7 @@
     *ngIf="noFoundedMovie; then noResult; else movieList">
   </ng-container>
   <ng-template #noResult>
-    <div class="no--result" *ngIf="noFoundedMovie">
+    <div class="no--result" *ngIf="noFoundedMovie && !clearList">
       No result founded!!!
     </div>
   </ng-template>
@@ -19,5 +19,5 @@
     <div class="list list--container">
       <app-list *ngFor="let movie of movies" [movie]="movie"></app-list>
     </div>
-  </ng-template>
+   </ng-template>
 </main>

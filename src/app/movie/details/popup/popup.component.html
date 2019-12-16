@@ -1,0 +1,136 @@
+<div class="popup popup--holder">
+  <div class="popup--content">
+      <div class="popup--content__left">
+        <ng-container
+          *ngIf="extendedMovieDetails.imdb_id; then linkImdb; else noLinkImdb">
+        </ng-container>
+        <ng-template #linkImdb>
+          <a href="{{extendedMovieDetails.imdb_link}}" target="_blank">
+            <img src="{{extendedMovieDetails.poster_path}}" alt="poster" title="movie poster">
+          </a>
+        </ng-template>
+        <ng-template #noLinkImdb>
+          <img src="{{extendedMovieDetails.poster_path}}" alt="poster" title="movie poster">
+        </ng-template>
+      </div>
+      <div class="popup--content__right">
+        <button #closePopup (click)="onClosePopup()">
+          <i class="fa fa-times-circle"></i>
+        </button>
+        <div *ngIf="isMovie()" class="movies">
+          <h1>{{extendedMovieDetails.original_title}}</h1>
+          <p class="tagline">{{extendedMovieDetails.tagline}}</p>
+          <p class="released--date">Released: {{extendedMovieDetails.release_date | date}}</p>
+          <p class="overview">{{extendedMovieDetails.overview}}</p>
+          <div>
+            <span>Country</span>
+            <p class="countries" *ngFor="let country of extendedMovieDetails.production_countries; let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.production_countries, i); then lastNames; else names">
+              </ng-container>
+              <ng-template #names>
+                {{ country.name}},
+              </ng-template>
+              <ng-template #lastNames>
+                {{ country.name}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Language </span>
+            <p class="languages" *ngFor="let spokenLanguage of extendedMovieDetails.spoken_languages;let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.spoken_languages, i); then lastLanguage; else languages">
+              </ng-container>
+              <ng-template #languages>
+                {{ spokenLanguage.name}},
+              </ng-template>
+              <ng-template #lastLanguage>
+                {{ spokenLanguage.name}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Genres</span>
+            <p class="genres" *ngFor="let genre of extendedMovieDetails.genres; let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.genres, i); then lastGenre; else genres">
+              </ng-container>
+              <ng-template #genres>
+                {{ genre.name}},
+              </ng-template>
+              <ng-template #lastGenre>
+                {{ genre.name}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Length</span>
+            <p> {{ extendedMovieDetails.runtime}} mins</p>
+          </div>
+        </div>
+
+        <div *ngIf="!isMovie()" class="tv">
+          <h1>{{extendedMovieDetails.name}}</h1>
+          <p class="released--date">Released: {{extendedMovieDetails.first_air_date | date}}</p>
+          <p class="overview">{{extendedMovieDetails.overview}}</p>
+          <div>
+            <span>Country</span>
+            <p class="countries" *ngFor="let country of extendedMovieDetails.origin_country; let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.origin_country, i); then lastCountry; else countries">
+              </ng-container>
+              <ng-template #countries>
+                {{ country}},
+              </ng-template>
+              <ng-template #lastCountry>
+                {{ country}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Language </span>
+            <p class="languages" *ngFor="let spokenLanguage of extendedMovieDetails.languages;let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.languages, i); then lastLanguage; else languages">
+              </ng-container>
+              <ng-template #languages>
+                {{ spokenLanguage}},
+              </ng-template>
+              <ng-template #lastLanguage>
+                {{ spokenLanguage}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Genres</span>
+            <p class="genres" *ngFor="let genre of extendedMovieDetails.genres; let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.genres, i); then lastGenre; else genres">
+              </ng-container>
+              <ng-template #genres>
+                {{ genre.name}},
+              </ng-template>
+              <ng-template #lastGenre>
+                {{ genre.name}}
+              </ng-template>
+            </p>
+          </div>
+          <div>
+            <span>Length</span>
+            <p *ngFor="let runtime of extendedMovieDetails.episode_run_time; let i = index">
+              <ng-container
+                *ngIf="checkIsLastItem(extendedMovieDetails.episode_run_time, i); then lastRuntime; else runtimes">
+              </ng-container>
+              <ng-template #runtimes>
+                {{ runtime}},
+              </ng-template>
+              <ng-template #lastRuntime>
+                {{ runtime}} mins
+              </ng-template>
+            </p>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
