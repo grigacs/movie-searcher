@@ -1,12 +1,14 @@
 <form [formGroup]="form" (submit)="onSearchMovie()">
   <div>
-    <label>
+    <label for="search">
       Search:
+    </label>
       <input type="text"
              formControlName="title"
+             id="search"
              (keyup.enter)="onSearchMovie()"
       >
-    </label>
+
     <button type="reset" (click)="onResetForm()">
       <i class="fa fa-times-circle"></i>
     </button>

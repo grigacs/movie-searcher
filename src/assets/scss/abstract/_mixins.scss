@@ -2,5 +2,34 @@
   position: absolute;
   top: 50%;
   right: .1em;
-  transform: translate(0,  -50%);
+  transform: translate(0, -55%);
+}
+
+@mixin textOverflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == small-phone {
+    @media only screen and (max-width: 26.25em) { @content };    //420px
+  }
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 36em) { @content };    //576px
+  }
+  @if $breakpoint == tab-port {
+    @media only screen and (max-width: 48em) { @content };     //768px
+  }
+  @if $breakpoint == small-desktop {
+    @media only screen and (max-width: 62em) { @content };    //992px
+  }
+
+  @if $breakpoint == medium-desktop {
+    @media only screen and (max-width: 75em) { @content };    //1200px
+  }
+
+  @if $breakpoint == big-desktop {
+    @media only screen and (min-width: 100em) { @content };    //1800
+  }
 }

@@ -1,92 +1,169 @@
 @import "../../../../assets/scss/base/base";
-
-.popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  z-index: 1000;
-  overflow: auto;
-
-  &--content {
+:host {
+  width: 100%;
+  .popup {
     display: flex;
-    padding: 4.5rem 1.5rem 1.5rem 1.5rem;
-    position: relative;
-    background: $color-black;
-    max-width: 110rem;
-    width: 70%;
-    border-radius: 1rem;
+    justify-content: center;
+    margin: 2rem auto;
+    z-index: 1000;
+    overflow: auto;
 
-    &__left, &__right {
+    &--content {
       display: flex;
-    }
+      padding: 4.5rem 1.5rem 1.5rem 1.5rem;
+      position: relative;
+      background: $color-black;
+      max-width: 110rem;
+      width: 70%;
+      border-radius: 1rem;
 
-    &__left {
-      margin-right: 3rem;
-    }
-
-    &__right {
-      flex-flow: column;
-      button {
-        width: max-content;
-        font-size: 3rem;
-        background: none;
-        border: none;
-        position: absolute;
-        top: 1rem;
-        right: 1.3rem;
-        color: $color-white;
-        transition: color .5s ease;
-        cursor: pointer;
-
-        &:hover {
-          color: $color-red;
-        }
-
-        &:focus {
-          outline: none;
-        }
-      }
-    div {
-      h1 {
-        font-size: 4.5rem;
-        font-weight: 800;
-        line-height: 5.9rem;
+      @include respond(tab-port) {
+        width: 90%;
       }
 
-      p {
-        font-family: 'Open Sans', sans-serif;
-        font-size: 2.4rem;
-        margin: 1.5rem 0;
-
-        &.tagline {
-          font-size: 3rem;
-          font-weight: 600;
-        }
-
-        &.countries, &.languages, &.genres {
-          display: flex;
-        }
+      @include respond(phone) {
+        flex-flow: column;
       }
 
-      div {
+      &__left, &__right {
         display: flex;
+      }
 
-        p {
-          margin: 0.4rem 0.4rem;
+      &__left {
+        padding-right: 2rem;
+        flex: 30%;
+        max-width: 30%;
+
+        @include respond(medium-desktop) {
+          flex: 50%;
+          max-width: 50%;
+        }
+
+        @include respond(phone) {
+          flex: 80%;
+          max-width: 80%;
+          padding-right: 0;
+          margin: 0 auto;
+        }
+
+        a {
+          width: 100%;
+
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+
+        img {
+          width: 100%;
+          object-fit: cover;
         }
       }
 
-      span {
-        font-size: 2.4rem;
-        width: 21%;
-        margin: 0.4rem 0.4rem 0.4rem 0;
+      &__right {
+        flex-flow: column;
+        flex: 70%;
+        max-width: 70%;
+
+        @include respond(medium-desktop) {
+          flex: 50%;
+          max-width: 50%;
+        }
+
+        @include respond(phone) {
+          flex: 80%;
+          max-width: 80%;
+          margin: 2rem auto 1rem;
+          text-align: justify;
+        }
+
+        button {
+          width: max-content;
+          font-size: 3rem;
+          background: none;
+          border: none;
+          position: absolute;
+          top: 1rem;
+          right: 1.3rem;
+          color: $color-white;
+          transition: color .5s ease;
+          cursor: pointer;
+
+          &:hover {
+            color: $color-red;
+          }
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        div {
+          h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 5.4rem;
+            @include respond(small-desktop) {
+              font-size: 3.5rem;
+              line-height: 4.2rem;
+            }
+          }
+
+          p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 2rem;
+            margin: 1.5rem 0;
+
+            @include respond(medium-desktop) {
+              font-size: 1.5rem;
+            }
+
+            @include respond(phone) {
+              font-size: 2rem;
+            }
+
+            &.tagline {
+              font-size: 3rem;
+              font-weight: 600;
+
+              @include respond(small-desktop) {
+                font-size: 2rem;
+              }
+            }
+
+            &.countries, &.languages, &.genres {
+              @include textOverflow;
+            }
+          }
+
+          div {
+            display: flex;
+
+            p {
+              margin: 0.4rem 0.4rem;
+            }
+          }
+
+          span {
+            font-size: 2rem;
+            width: 21%;
+            margin: 0.4rem 0.4rem 0.4rem 0;
+
+            @include respond(medium-desktop) {
+              font-size: 1.5rem;
+            }
+
+            @include respond(small-desktop) {
+              flex: 21%;
+            }
+
+            @include respond(phone) {
+              font-size: 2rem;
+            }
+          }
+        }
       }
-    }
     }
   }
 }
