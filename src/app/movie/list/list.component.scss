@@ -1,8 +1,27 @@
+@import "../../../assets/scss/base/base";
+
 :host {
   margin: auto;
+  flex: 25%;
+  max-width: 25%;
 
+  @include respond(medium-desktop) {
+    flex: 33%;
+    max-width: 33%;
+  }
+
+  @include respond(tab-port) {
+    flex: 50%;
+    max-width: 50%;
+  }
+
+  @include respond(small-phone) {
+    flex: 100%;
+    max-width: 100%;
+  }
+
+  padding: 0 .5rem;
   .movie {
-    max-width: 16.6rem;
 
     a {
       color: #fff;
@@ -19,19 +38,16 @@
     }
 
     &--title {
-      font-size: 1.6rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      width: 100%;
+      font-size: 2rem;
       padding: 1rem 0;
     }
 
+    &--title,  &--genres, &--release-date {
+      @include  textOverflow;
+    }
+
     &--genres, &--release-date {
-      font-size: 1.2rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 1.8rem;
       padding: .5rem 0;
     }
 

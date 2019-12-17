@@ -1,7 +1,7 @@
 export interface MovieExtendedDetailsModel {
   poster_path: string;
   original_title?: string;
-  name?: string;
+  original_name?: string;
   overview: string;
   genres: Array<{id: number; name: string}>;
   release_date?: Date;

@@ -145,7 +145,7 @@ export class MovieService {
           } else {
             return {
               ...defaultProperties,
-              name: extendedMovieDetails.name,
+              original_name: extendedMovieDetails.original_name,
               first_air_date: extendedMovieDetails.first_air_date,
               episode_run_time: extendedMovieDetails.episode_run_time,
               origin_country: extendedMovieDetails.origin_country,

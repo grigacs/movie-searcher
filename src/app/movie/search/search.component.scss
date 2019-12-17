@@ -4,35 +4,70 @@
   display: flex;
   width: 74.5%;
   margin: 3em auto 0;
+
+  @include respond(small-desktop) {
+    width: 100%;
+  }
+
   form {
     width: 100%;
     div {
       position: relative;
+      display: flex;
+      justify-content: center;
+
+      @include respond(tab-port) {
+        flex-direction: column;
+      }
+
       &.error {
         font-size: 2rem;
-        text-align: center;
         color: $color-red;
         padding: 1rem;
+        line-height: 3rem;
+
+        @include respond(tab-port) {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+
       }
       label {
         font-size: 4rem;
-        width: 100%;
-        display: flex;
-        input {
-          font-family: "Open Sans", sans-serif;
-          background: #000;
-          border-top: none;
-          border-right: none;
-          border-bottom: 0.1rem solid #FFF;
-          border-left: none;
-          padding: 0.2rem 0.5rem 0.3rem;
+        width: auto;
+
+        @include respond(small-desktop) {
+            font-size: 3rem;
+        }
+
+        @include respond(tab-port) {
+          text-align: center;
+          margin-bottom: 2rem;
+        }
+      }
+
+      input {
+        font-family: "Open Sans", sans-serif;
+        background: #000;
+        border-top: none;
+        border-right: none;
+        border-bottom: 0.1rem solid #FFF;
+        border-left: none;
+        width: 85%;
+        padding: 0.2rem 0.5rem 0.3rem;
+        color: #FFF;
+        font-size: 2.5rem;
+        margin-left: 1.5rem;
+
+        @include respond(tab-port) {
           width: 100%;
-          color: #FFF;
-          font-size: 2.5rem;
-          margin-left: 1.5rem;
-          &:focus {
-            outline: none;
-          }
+          padding: 0.5rem 5rem 0.5rem 0.5rem;
+          margin-left: 0;
+        }
+
+
+        &:focus {
+          outline: none;
         }
       }
 
@@ -43,6 +78,11 @@
         border: none;
         background: transparent;
         color: $color-white;
+
+        @include respond(tab-port) {
+          transform: translate(0, 0);
+        }
+
         &:hover {
           color: $color-red;
         }

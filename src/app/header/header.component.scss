@@ -1,5 +1,12 @@
+@import "../../assets/scss/base/base";
+
 :host {
   display: flex;
   width: 100%;
   padding: 2rem 0;
+  div {
+    @include respond(tab-port) {
+      margin: 0 auto;
+    }
+  }
 }
