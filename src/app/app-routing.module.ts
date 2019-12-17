@@ -1,8 +1,8 @@
 import { RouterModule, Routes } from '@angular/router';
-import { SearchComponent } from './movie/search/search.component';
 import { NgModule } from '@angular/core';
 import {MainComponent} from './main/main.component';
 import {DetailsComponent} from './movie/details/details.component';
+import {PageNotFoundComponent} from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'details/:mediaType/:movieId',
     component: DetailsComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

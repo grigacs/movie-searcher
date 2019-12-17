@@ -26,4 +26,49 @@ body {
   color: $color-white;
 }
 
+button:hover {
+  outline: none;
+}
 
+/* pagination style override start */
+
+.pagination--holder {
+  .ngx-pagination {
+    margin: 2rem auto;
+    font-size: 2rem;
+
+    .pagination-previous, .pagination-next {
+      span {
+        @include paginationStyle($color-white);
+        &:after, &:before {
+          @include paginationStyle($color-white);
+        }
+      }
+
+      &.disabled {
+        @include paginationStyle($color-white);
+        &:before {
+          @include paginationStyle($color-white);
+        }
+      }
+    }
+    .current {
+      background: red;
+      span {
+        @include paginationStyle($color-white);
+      }
+    }
+  }
+}
+
+.pagination--holder {
+  .ngx-pagination {
+    a, button {
+      @include paginationStyle($color-white);
+      &:hover {
+        background: red;
+      }
+    }
+  }
+}
+/* pagination style override end */

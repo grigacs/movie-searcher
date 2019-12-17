@@ -1,12 +1,14 @@
 @import "../../../../assets/scss/base/base";
 :host {
   width: 100%;
+  display: flex;
   .popup {
     display: flex;
     justify-content: center;
     margin: 2rem auto;
     z-index: 1000;
     overflow: auto;
+    align-self: center;
 
     &--content {
       display: flex;
@@ -14,7 +16,7 @@
       position: relative;
       background: $color-black;
       max-width: 110rem;
-      width: 70%;
+      width: 90%;
       border-radius: 1rem;
 
       @include respond(tab-port) {
@@ -75,7 +77,6 @@
           flex: 80%;
           max-width: 80%;
           margin: 2rem auto 1rem;
-          text-align: justify;
         }
 
         button {
@@ -116,7 +117,7 @@
             margin: 1.5rem 0;
 
             @include respond(medium-desktop) {
-              font-size: 1.5rem;
+              font-size: 1.8rem;
             }
 
             @include respond(phone) {
@@ -132,10 +133,27 @@
               }
             }
 
+            &.overview {
+              @include respond(phone) {
+                text-align: justify;
+              }
+            }
+
             &.countries, &.languages, &.genres {
               @include textOverflow;
             }
+
+            &.countries,  &.genres {
+              @include respond(tab-port) {
+                display: flex;
+                white-space: initial;
+                overflow: auto;
+                text-overflow: initial;
+              }
+            }
           }
+
+
 
           div {
             display: flex;
@@ -145,13 +163,28 @@
             }
           }
 
+          div {
+            &.genres--holder, &.country--holder {
+              @include respond(phone) {
+                flex-direction: column;
+                margin: 2rem 0;
+              }
+
+              p {
+                @include respond(phone) {
+                  margin: 0.4rem 0.4rem 0.4rem 0;
+                }
+              }
+            }
+          }
+
           span {
             font-size: 2rem;
             width: 21%;
             margin: 0.4rem 0.4rem 0.4rem 0;
 
             @include respond(medium-desktop) {
-              font-size: 1.5rem;
+              font-size: 1.8rem;
             }
 
             @include respond(small-desktop) {

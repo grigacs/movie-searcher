@@ -16,6 +16,8 @@ export class MainComponent implements OnInit, OnDestroy {
   noFoundedMovie = false;
   pageNumbers: number;
   clearList: boolean;
+  isLoading = false;
+  page = 1;
 
   constructor(private movieService: MovieService) { }
 
@@ -31,21 +33,27 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.onGetStoredMovies();
+    this.page = this.movieService.getCurrentPage();
 
     this.movieService.getMovieGenres();
 
     this.movieSubscription = this.movieService.getMoviesUpdateListener()
       .subscribe(movies => {
+        this.isLoading = false;
+
         this.clearList = movies.clear;
 
         if (MainComponent.checkFoundMovies(movies.count)) {
           this.noFoundedMovie = false;
           this.movieTotalCount = movies.count;
           this.pageNumbers = movies.total_pages;
+          this.page = movies.page;
           this.movies = [...movies.results];
         } else {
           this.noFoundedMovie = true;
         }
+      }, error => {
+        console.log(error);
       });
   }
 
@@ -60,5 +68,14 @@ export class MainComponent implements OnInit, OnDestroy {
       this.pageNumbers = this.movieService.getStoredMovies().total_pages;
       this.movies = [...this.movieService.getStoredMovies().results];
     }
+  }
+
+  changeStateLoading(isLoading: boolean) {
+    this.isLoading = isLoading;
+  }
+
+  onChangePage(currentPageNumber: number) {
+    const title = this.movieService.getStoredTitle();
+    this.movieService.getMovies(title, currentPageNumber);
   }
 }

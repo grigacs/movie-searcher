@@ -35,9 +35,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.extendedMovieDetailsSubscription = this.movieService.getMovieDetails(this.movieId, this.mediaType)
             .subscribe(extendedMovieDetails => {
               this.extendedMovieDetails = extendedMovieDetails;
+            }, error => {
+              console.log(error);
             });
         }
-    });
+    }, error => {
+        console.log(error);
+      });
   }
 
   ngOnDestroy(): void {

@@ -1,7 +1,6 @@
 @import "../../../assets/scss/base/base";
 
 :host {
-  margin: auto;
   flex: 25%;
   max-width: 25%;
 
@@ -47,8 +46,7 @@
     }
 
     &--genres, &--release-date {
-      font-size: 1.8rem;
-      padding: .5rem 0;
+      font-size: 1.5rem;
     }
 
     &--release-date {

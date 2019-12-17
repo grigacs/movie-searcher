@@ -5,6 +5,13 @@
   transform: translate(0, -55%);
 }
 
+@mixin absCenter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @mixin textOverflow {
   white-space: nowrap;
   overflow: hidden;
@@ -32,4 +39,9 @@
   @if $breakpoint == big-desktop {
     @media only screen and (min-width: 100em) { @content };    //1800
   }
+}
+
+@mixin paginationStyle($color) {
+  color: $color;
+  font-size: 1.8rem;
 }
