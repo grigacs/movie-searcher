@@ -43,17 +43,21 @@ export class MovieService {
           results: moviesData.results.map( (movies: MovieDetailsModel) => {
             // if poster value undefined or null then add a placeholder img.
             const posterPath = !movies.poster_path ? '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${movies.poster_path}`;
+            // movie has a title, tv show has only name, check what property found and save it as a title.
             const movieTitle = !movies.title ? movies.name : movies.title;
-            const movieData = !movies.release_date ? movies.first_air_date : movies.release_date;
+            // movie has a release date, tv show has first air date, check what property exists and save as movie date
+            const movieDate = !movies.release_date ? movies.first_air_date : movies.release_date;
 
+            // store current we need for it when returns to list page from detail page
             this.storeCurrentPage(page);
 
+            // return a mapped data
             return {
               id: movies.id,
               title: movieTitle,
               media_type: movies.media_type,
               genre_ids: movies.genre_ids,
-              release_date: movieData,
+              release_date: movieDate,
               poster_path: posterPath
             };
           }),
@@ -63,6 +67,7 @@ export class MovieService {
         };
       }),
     ).subscribe(transformedMoviesData => {
+        // persists data
         this.title = title;
         this.filteredElementNumbers = 0;
         this.movies = {
@@ -75,12 +80,15 @@ export class MovieService {
           page: transformedMoviesData.page,
           clear: false,
        };
+
+        // call next function on subject
         this.moviesUpdated.next(this.movies);
     }, error => {
       console.log(error);
     });
   }
 
+  // clear movie data when user clear it from the search component
   clearMovies(): void {
     this.moviesUpdated.next({
       results: [],
@@ -91,6 +99,7 @@ export class MovieService {
     });
   }
 
+  // when application loaded, get all genres and save it
   getMovieGenres(): Subscription {
       return this.http.get<GenreModel>(`${API_URL}genre/movie/list?api_key=${API_KEY}`)
         .subscribe(genres => {
@@ -100,6 +109,7 @@ export class MovieService {
         });
   }
 
+  // Return current movie genre names by genre ids
   getMovieGenreNames(genreIds: Array<number>): string {
     let movieGenres = '';
 
@@ -125,6 +135,7 @@ export class MovieService {
     return movieGenres;
   }
 
+  // get movies extended data for detail page
   getMovieDetails(id: number, mediaType: string): Observable<MovieExtendedDetailsModel> {
     return this.http.get(`${API_URL}${mediaType}/${id}?api_key=${API_KEY}&language=${API_LANG}`)
       .pipe(
@@ -132,6 +143,7 @@ export class MovieService {
           const posterPath = !extendedMovieDetails.poster_path ?
             '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${extendedMovieDetails.poster_path}`;
 
+          // same properties in movies and tv shows
           const defaultProperties = {
             poster_path: posterPath,
             overview: extendedMovieDetails.overview,
@@ -142,6 +154,7 @@ export class MovieService {
           };
 
           if (mediaType === 'movie') {
+            // extend movie properties and return it
             return {
               ...defaultProperties,
               original_title: extendedMovieDetails.original_title,
@@ -151,6 +164,7 @@ export class MovieService {
               spoken_languages: extendedMovieDetails.spoken_languages
             };
           } else {
+            // extend tv show properties and return it
             return {
               ...defaultProperties,
               original_name: extendedMovieDetails.original_name,
@@ -164,18 +178,22 @@ export class MovieService {
       );
   }
 
+  // get the stored titles when we go back to list page
   getStoredTitle() {
     return this.title;
   }
 
+  // get stored movies for list page
   getStoredMovies() {
       return this.movies;
   }
 
+  // store current page for we can get last page what we visit
   storeCurrentPage(currentPage: number) {
       this.currentPage = currentPage;
   }
 
+  // get the last page
   getCurrentPage() {
     return this.currentPage;
   }
