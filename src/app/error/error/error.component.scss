@@ -1,0 +1,20 @@
+@import "../../../assets/scss/base/base";
+
+.error--holder {
+  @include absCenter;
+  position: fixed;
+  font-size: 1.8rem;
+  text-align: center;
+  line-height: 4rem;
+  padding: 2rem;
+  max-width: 22rem;
+  z-index: 1001;
+  background: $color-gray;
+  border-radius: 1rem;
+
+  @include respond(tab-port) {
+    font-size: 1.6rem;
+    line-height: 2.5rem;
+    max-width: 28rem;
+  }
+}

@@ -2,5 +2,11 @@
 
 :host{
   display: flex;
+  min-height: 100vh;
   background: $color-gray;
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }

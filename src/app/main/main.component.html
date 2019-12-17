@@ -2,22 +2,32 @@
   <app-header></app-header>
 </header>
 <main>
-  <app-search></app-search>
-
-  <ng-container
-    *ngIf="noFoundedMovie; then noResult; else movieList">
-  </ng-container>
-  <ng-template #noResult>
-    <div class="no--result" *ngIf="noFoundedMovie && !clearList">
-      No result founded!!!
-    </div>
+  <app-search (isLoadingChange)="changeStateLoading($event)"></app-search>
+  <div *ngIf="isLoading; else listElementHolder" class="loader">
+    <i class="fa fa-spinner"></i>
+  </div>
+  <ng-template #listElementHolder>
+    <ng-container
+      *ngIf="noFoundedMovie; then noResult; else movieList">
+    </ng-container>
+    <ng-template #noResult>
+      <div class="no--result" *ngIf="noFoundedMovie && !clearList">
+        No result found!!!
+      </div>
+    </ng-template>
+    <ng-template #movieList>
+      <div class="result--counts" *ngIf="movieTotalCount">
+        {{movieTotalCount}} Search result(s):
+      </div>
+      <div class="list list--container">
+          <app-list *ngFor="let movie of movies | paginate: { itemsPerPage: 20, currentPage: page, totalItems: movieTotalCount }" [movie]="movie"></app-list>
+        <ng-container *ngIf="movies.length > 0">
+          <div class="pagination pagination--holder">
+            <pagination-controls (click)="onChangePage(page)" (pageChange)="page = $event"></pagination-controls>
+          </div>
+        </ng-container>
+      </div>
+     </ng-template>
   </ng-template>
-  <ng-template #movieList>
-    <div class="result--counts" *ngIf="movieTotalCount">
-      {{movieTotalCount}} Search result(s):
-    </div>
-    <div class="list list--container">
-        <app-list *ngFor="let movie of movies" [movie]="movie"></app-list>
-    </div>
-   </ng-template>
 </main>
+<app-error></app-error>

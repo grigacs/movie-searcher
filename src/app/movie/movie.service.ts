@@ -12,6 +12,7 @@ import { MoviesModel } from './modules/movies.model';
 const API_URL = `${environment.apiUrl}`;
 const API_KEY = `${environment.apiKey}`;
 const API_LANG = `${environment.apiLanguage}`;
+const API_MULTI_ENDPOINT = `${environment.searchMultiEndpoint}`;
 const IMG_PATH = `${environment.imgAbsolutePath}`;
 const IMDB_LINK = `${environment.imdbLink}`;
 
@@ -24,22 +25,18 @@ export class MovieService {
   private title: string;
   private moviesUpdated = new Subject<MoviesModel>();
   private genres: {id: number, name: string}[] = [];
+  private filteredElementNumbers = 0;
+  private currentPage = 1;
 
   constructor(private http: HttpClient) { }
 
-  getMoviesUpdateListener(): Observable<{
-    results: Array<MovieDetailsModel>,
-    count: number,
-    total_pages: number,
-    page: number,
-    clear: boolean
-  }> {
+  getMoviesUpdateListener(): Observable<MoviesModel> {
     return this.moviesUpdated.asObservable();
   }
 
-  getMovies(title: string): Subscription {
+  getMovies(title: string, page: number = 1): Subscription {
     return this.http.get<MovieEndpointModel>(
-      `${API_URL}${environment.searchMoviesEndpoint}?api_key=${API_KEY}&language=${API_LANG}&query=${title}`,
+      `${API_URL}${API_MULTI_ENDPOINT}?api_key=${API_KEY}&language=${API_LANG}&query=${title}&page=${page}&include_adult=false`,
     ).pipe(
       map(moviesData => {
         return {
@@ -48,6 +45,8 @@ export class MovieService {
             const posterPath = !movies.poster_path ? '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${movies.poster_path}`;
             const movieTitle = !movies.title ? movies.name : movies.title;
             const movieData = !movies.release_date ? movies.first_air_date : movies.release_date;
+
+            this.storeCurrentPage(page);
 
             return {
               id: movies.id,
@@ -62,19 +61,23 @@ export class MovieService {
           total_pages: moviesData.total_pages,
           page: moviesData.page
         };
-      })
+      }),
     ).subscribe(transformedMoviesData => {
         this.title = title;
-
+        this.filteredElementNumbers = 0;
         this.movies = {
-          results: [...transformedMoviesData.results],
-          count: transformedMoviesData.count,
+          results: [...transformedMoviesData.results.filter(movie => {
+            this.filteredElementNumbers++;
+            return movie.media_type !== 'person';
+          })],
+          count: transformedMoviesData.count - this.filteredElementNumbers,
           total_pages: transformedMoviesData.total_pages,
           page: transformedMoviesData.page,
           clear: false,
        };
-
         this.moviesUpdated.next(this.movies);
+    }, error => {
+      console.log(error);
     });
   }
 
@@ -92,6 +95,8 @@ export class MovieService {
       return this.http.get<GenreModel>(`${API_URL}genre/movie/list?api_key=${API_KEY}`)
         .subscribe(genres => {
           this.genres = genres.genres;
+        }, error => {
+          console.log(error);
         });
   }
 
@@ -103,12 +108,16 @@ export class MovieService {
     }
 
     if (genreIds.length > 0) {
-      genreIds.forEach(genreId => {
+      genreIds.forEach((genreId, idx) => {
         const index = this.genres.map(genre => genre.id)
           .indexOf(genreId);
 
         if (index >= 0) {
-          movieGenres += `${this.genres[index].name}, `;
+          if (idx === genreIds.length - 1) {
+            movieGenres += `${this.genres[index].name}`;
+          } else {
+            movieGenres += `${this.genres[index].name}, `;
+          }
         }
       });
     }
@@ -133,7 +142,6 @@ export class MovieService {
           };
 
           if (mediaType === 'movie') {
-
             return {
               ...defaultProperties,
               original_title: extendedMovieDetails.original_title,
@@ -162,5 +170,13 @@ export class MovieService {
 
   getStoredMovies() {
       return this.movies;
+  }
+
+  storeCurrentPage(currentPage: number) {
+      this.currentPage = currentPage;
+  }
+
+  getCurrentPage() {
+    return this.currentPage;
   }
 }

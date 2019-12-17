@@ -22,6 +22,30 @@
     width: 100%;
 
     div {
+      &.loader {
+        @include absCenter;
+        color: $color-white;
+        font-size: 5rem;
+        animation: infinite-spinning 2s infinite linear;
+      }
+
+      &.pagination {
+        display: flex;
+        flex-flow: row;
+        width: 100%;
+        flex: 100%;
+        justify-content: space-around;
+        div{
+          font-size: 1.8rem;
+          margin: 1rem auto;
+          cursor: pointer;
+
+          &:hover {
+            color: $color-red;
+          }
+        }
+      }
+
       &.no--result, &.result--counts {
         margin-top: 15rem;
         font-size: 2.9rem;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MovieService} from '../movie.service';
 
@@ -11,6 +11,7 @@ export class SearchComponent implements OnInit {
 
   form: FormGroup;
   title: string = null;
+  @Output() isLoadingChange = new EventEmitter<boolean>();
 
   constructor(private movieService: MovieService) {}
 
@@ -33,6 +34,8 @@ export class SearchComponent implements OnInit {
     if (this.form.invalid) {
       return;
     }
+
+    this.isLoadingChange.emit(true);
 
     this.movieService.getMovies(this.form.value.title);
   }
