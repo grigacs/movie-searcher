@@ -28,15 +28,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
           this.movieId = parseInt(paramMap.get('movieId'), 10);
           this.mediaType = paramMap.get('mediaType');
 
-          console.log(paramMap);
-
           if (isNaN(this.movieId)) {
             this.router.navigate(['']);
           }
 
           this.extendedMovieDetailsSubscription = this.movieService.getMovieDetails(this.movieId, this.mediaType)
             .subscribe(extendedMovieDetails => {
-              console.log(extendedMovieDetails);
               this.extendedMovieDetails = extendedMovieDetails;
             }, error => {
               console.log(error);

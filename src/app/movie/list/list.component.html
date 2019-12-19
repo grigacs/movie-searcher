@@ -1,5 +1,5 @@
 <div class="movie movie--container">
-  <a [routerLink]="['details', movie.type, movie.id]">
+  <a [routerLink]="['details', movie.media_type, movie.id]">
     <div class="movie--img img__holder">
       <img
         src="{{movie.poster_path}}"
@@ -7,14 +7,14 @@
         title="movie poster"
       >
     </div>
-    <div appTextColor class="movie--title" title="{{movie.title | customPipe }}">
-      {{movie.title | customPipe}}
+    <div class="movie--title" title="{{movie.title}}">
+      {{movie.title}}
     </div>
   </a>
-  <div class="movie--genres" title="{{movie.genres| customPipe}}">
-    {{movie.genres| customPipe}}
+  <div class="movie--genres" title="{{movie.genres}}">
+    {{movie.genres}}
   </div>
-  <div class="movie--release-date" title="{{movie.release_date | customPipe}}">
+  <div class="movie--release-date" title="{{movie.release_date}}">
     {{movie.release_date | date}}
   </div>
 </div>

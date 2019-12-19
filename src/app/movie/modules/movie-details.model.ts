@@ -3,7 +3,7 @@ export interface MovieDetailsModel {
   name?: string;
   title?: string;
   genre_ids: Array<number>;
-  type: string;
+  media_type: string;
   release_date?: Date;
   first_air_date?: Date;
   poster_path: string;
