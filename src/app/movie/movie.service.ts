@@ -1,46 +1,80 @@
 import { Injectable } from '@angular/core';
-import {Observable, Subject, Subscription} from 'rxjs';
+import {forkJoin, Observable, Subject, Subscription} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { map } from 'rxjs/operators';
+import {filter, map, tap} from 'rxjs/operators';
 import { MovieEndpointModel } from './modules/movie-endpoint.model';
 import { MovieDetailsModel } from './modules/movie-details.model';
 import { GenreModel } from './modules/genre.model';
 import { MovieExtendedDetailsModel } from './modules/movie-extended-details.model';
 import { MoviesModel } from './modules/movies.model';
+import {TvModel} from "./modules/tv.model";
 
 const API_URL = `${environment.apiUrl}`;
 const API_KEY = `${environment.apiKey}`;
 const API_LANG = `${environment.apiLanguage}`;
-const API_MULTI_ENDPOINT = `${environment.searchMultiEndpoint}`;
+const API_MOVIE_ENDPOINT = `${environment.searchMovieEndpoint}`;
+const API_TV_ENDPOINT = `${environment.searchTvEndpoint}`;
 const IMG_PATH = `${environment.imgAbsolutePath}`;
 const IMDB_LINK = `${environment.imdbLink}`;
+
+interface MergedMovieResults {result: MovieDetailsModel[]; count: number; total_pages: number; page: number; clear: boolean};
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovieService {
 
-  private movies: MoviesModel;
+  private movies: MergedMovieResults;
   private title: string;
-  private moviesUpdated = new Subject<MoviesModel>();
+  private moviesUpdated = new Subject<MergedMovieResults>();
   private genres: {id: number, name: string}[] = [];
   private filteredElementNumbers = 0;
   private currentPage = 1;
 
   constructor(private http: HttpClient) { }
 
-  getMoviesUpdateListener(): Observable<MoviesModel> {
+  getMoviesUpdateListener(): Observable<MergedMovieResults> {
     return this.moviesUpdated.asObservable();
   }
 
-  getMovies(title: string, page: number = 1): Subscription {
+  getMoviesAndTVShows(title: string, page: number = 1): any {
+    return forkJoin(
+      this.getMovies(title, page),
+      this.getTv(title, page)
+    ).subscribe((mergedMoviesData) => {
+      console.log(mergedMoviesData);
+      const [movies, tv] = mergedMoviesData;
+
+      const {moviesCount, moviesTotalPages, moviesResult} = movies;
+
+      const {tvsCount, tvsTotalPages, tvsResult} = tv;
+
+      this.title = title;
+      this.filteredElementNumbers = 0;
+      this.movies = {
+        result: [...moviesResult, ...tvsResult],
+        count: moviesCount + tvsCount,
+        total_pages: moviesTotalPages + tvsTotalPages,
+        page: page,
+        clear: false,
+      };
+
+      // call next function on subject
+      this.moviesUpdated.next(this.movies);
+    })
+  }
+
+  getMovies(title: string, page: number): Observable<MoviesModel> {
     return this.http.get<MovieEndpointModel>(
-      `${API_URL}${API_MULTI_ENDPOINT}?api_key=${API_KEY}&language=${API_LANG}&query=${title}&page=${page}&include_adult=false`,
+      `${API_URL}${API_MOVIE_ENDPOINT}?api_key=${API_KEY}&language=${API_LANG}&query=${title}&page=${page}&include_adult=false`,
     ).pipe(
+      tap(moviesData =>  console.log(moviesData.results)),
+      //filter(moviesData => moviesData.results.),
       map(moviesData => {
+        const res = moviesData.results;
         return {
-          results: moviesData.results.map( (movies: MovieDetailsModel) => {
+          moviesResult: res.map( (movies: MovieDetailsModel) => {
             // if poster value undefined or null then add a placeholder img.
             const posterPath = !movies.poster_path ? '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${movies.poster_path}`;
             // movie has a title, tv show has only name, check what property found and save it as a title.
@@ -55,43 +89,60 @@ export class MovieService {
             return {
               id: movies.id,
               title: movieTitle,
-              media_type: movies.media_type,
               genre_ids: movies.genre_ids,
               release_date: movieDate,
-              poster_path: posterPath
+              poster_path: posterPath,
+              type: 'movie'
             };
           }),
-          count: moviesData.total_results,
-          total_pages: moviesData.total_pages,
-          page: moviesData.page
+          moviesCount: moviesData.total_results,
+          moviesTotalPages: moviesData.total_pages
         };
       }),
-    ).subscribe(transformedMoviesData => {
-        // persists data
-        this.title = title;
-        this.filteredElementNumbers = 0;
-        this.movies = {
-          results: [...transformedMoviesData.results.filter(movie => {
-            this.filteredElementNumbers++;
-            return movie.media_type !== 'person';
-          })],
-          count: transformedMoviesData.count - this.filteredElementNumbers,
-          total_pages: transformedMoviesData.total_pages,
-          page: transformedMoviesData.page,
-          clear: false,
-       };
+    )
+  }
 
-        // call next function on subject
-        this.moviesUpdated.next(this.movies);
-    }, error => {
-      console.log(error);
-    });
+  getTv(title: string, page: number = 1): Observable<TvModel> {
+    return this.http.get<MovieEndpointModel>(
+      `${API_URL}${API_TV_ENDPOINT}?api_key=${API_KEY}&language=${API_LANG}&query=${title}&page=${page}&include_adult=false`,
+    ).pipe(
+      tap(tvData =>  console.log(tvData.results)),
+      //filter(moviesData => moviesData.results.),
+      map(tvData => {
+        const res = tvData.results;
+        return {
+          tvsResult: res.map( (tv: MovieDetailsModel) => {
+            // if poster value undefined or null then add a placeholder img.
+            const posterPath = !tv.poster_path ? '/assets/images/placeholder-300x450.png' : `${IMG_PATH}${tv.poster_path}`;
+            // movie has a title, tv show has only name, check what property found and save it as a title.
+            const movieTitle = !tv.title ? tv.name : tv.title;
+            // movie has a release date, tv show has first air date, check what property exists and save as movie date
+            const movieDate = !tv.release_date ? tv.first_air_date : tv.release_date;
+
+            // store current we need for it when returns to list page from detail page
+            this.storeCurrentPage(page);
+
+            // return a mapped data
+            return {
+              id: tv.id,
+              title: movieTitle,
+              genre_ids: tv.genre_ids,
+              release_date: movieDate,
+              poster_path: posterPath,
+              type: 'tv'
+            };
+          }),
+          tvsCount: tvData.total_results,
+          tvsTotalPages: tvData.total_pages
+        };
+      }),
+    )
   }
 
   // clear movie data when user clear it from the search component
   clearMovies(): void {
     this.moviesUpdated.next({
-      results: [],
+      result: [],
       count: null,
       total_pages: null,
       page: null,
@@ -136,8 +187,9 @@ export class MovieService {
   }
 
   // get movies extended data for detail page
-  getMovieDetails(id: number, mediaType: string): Observable<MovieExtendedDetailsModel> {
-    return this.http.get(`${API_URL}${mediaType}/${id}?api_key=${API_KEY}&language=${API_LANG}`)
+  getMovieDetails(id: number, type: string): Observable<MovieExtendedDetailsModel> {
+    console.log(`${API_URL}${type}/${id}?api_key=${API_KEY}&language=${API_LANG}`);
+    return this.http.get(`${API_URL}${type}/${id}?api_key=${API_KEY}&language=${API_LANG}`)
       .pipe(
         map((extendedMovieDetails: MovieExtendedDetailsModel) => {
           const posterPath = !extendedMovieDetails.poster_path ?
@@ -153,7 +205,7 @@ export class MovieService {
             imdb_link: `${IMDB_LINK}${extendedMovieDetails.imdb_id}`,
           };
 
-          if (mediaType === 'movie') {
+          if (type === 'movie') {
             // extend movie properties and return it
             return {
               ...defaultProperties,

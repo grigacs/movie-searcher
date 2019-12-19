@@ -16,6 +16,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { HttpErrorInterceptor } from './error/http-error.interceptor';
 import { ErrorComponent } from './error/error/error.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TextColorDirective } from './text-color.directive';
+import { CustomPipePipe } from './custom-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     DetailsComponent,
     PopupComponent,
     PageNotFoundComponent,
-    ErrorComponent
+    ErrorComponent,
+    TextColorDirective,
+    CustomPipePipe
   ],
   imports: [
     BrowserModule,

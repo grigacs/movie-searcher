@@ -37,7 +37,7 @@ export class SearchComponent implements OnInit {
 
     this.isLoadingChange.emit(true);
 
-    this.movieService.getMovies(this.form.value.title);
+    this.movieService.getMoviesAndTVShows(this.form.value.title);
   }
 
   onResetForm() {
